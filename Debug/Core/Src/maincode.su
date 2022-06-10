@@ -1,0 +1,3 @@
+../Core/Src/maincode.c:14:6:start_rtos	16	static
+../Core/Src/maincode.c:40:6:dataGenerator	48	static
+../Core/Src/maincode.c:72:6:reciveDataTask	32	static
