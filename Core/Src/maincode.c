@@ -39,7 +39,7 @@ void start_rtos(void) {
 
 void dataGenerator(void *arg) {
 	uint8_t pinState = 0;
-	uint8_t sampleData[10] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
+	uint8_t sampleData[10] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' };
 	BaseType_t queueStatus;
 	TickType_t xLastWakeTime;
 	const TickType_t xFrequency = pdMS_TO_TICKS(100);
