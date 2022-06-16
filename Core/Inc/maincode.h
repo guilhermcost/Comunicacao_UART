@@ -4,7 +4,9 @@
 extern UART_HandleTypeDef huart1;
 
 void start_rtos(void);
-void dataGenerator(void *arg);
-void reciveDataTask(void *arg);
+void generateDataTask(void *arg);
+void transmitDataTask(void *arg);
+void recieveDataTask(void *arg);
+void ledTask(void *arg);
 
 #endif /* SRC_MAINCODE_H_ */
