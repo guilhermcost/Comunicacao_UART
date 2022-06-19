@@ -5,7 +5,7 @@
 #include "queue.h"
 #include "semphr.h"
 
-#define MS_TO_TRANSMIT 100
+#define MS_TO_TRANSMIT 1
 #define MS_TO_RECIEVE  1
 #define DATA_PACK  45
 #define DATA_PACK2 21
@@ -84,6 +84,7 @@ void generateDataTask(void *arg) {
 
 	uint8_t packCounter = 0;
 	uint8_t pack10Counter = 0;
+	uint8_t parity = 0;
 
 	while(1) {
 
@@ -97,9 +98,12 @@ void generateDataTask(void *arg) {
 			sampleData[35] = 'D';
 		}
 
+		sampleData[0]  = packCounter;
+		sampleData[0] |= 0b01000000;
+
 		if(packCounter >= 7) {
 			if(pack10Counter == 0) {
-				sampleData[0] |= 0b01000000;
+				sampleData[0] |= 0b00010000;
 				if(packCounter >= 8) {
 					sampleData[37] += 1;
 					sampleData[39] += 1;
@@ -112,11 +116,22 @@ void generateDataTask(void *arg) {
 			}
 
 		} else {
-			sampleData[0] &= ~0b01000000;
+			sampleData[0] &= ~0b00010000;
 			sampleData[37] = '*';
 			sampleData[39] = '*';
 			sampleData[41] = '*';
 		}
+
+		// Para incluir tstamp (comentado para fins de teste)
+//		TickType_t now = xTaskGetTickCount();
+//		sampleData[43] = (uint8_t)((now & 0x00F0) >> 8);
+//		sampleData[44] = (uint8_t)((now & 0x000F) >> 0);
+
+		uint8_t p = 0;
+		for(int i = 0; i < sizeof(sampleData); i++) p ^= sampleData[i];
+		p = ((p>>7)^(p>>6)^(p>>5)^(p>>4)^(p>>3)^(p>>2)^(p>>1)^(p>>0)) & 1;
+		parity = (p << 5);
+		sampleData[0] |= parity;
 
 		queueStatus = xQueueSend(queueHandler01, (void*)sampleData, xFrequency);
 		if(queueStatus != pdTRUE) xQueueSend(queueHandler01, (void*)sampleData, xFrequency);
@@ -181,7 +196,7 @@ void recieveDataTask(void *arg) {
 	};
 
 	while(1) {
-		xSemaphoreTake(xUart_semaphore, portMAX_DELAY);
+		xSemaphoreTake(xUart_semaphore, xFrequency);
 		switch(Loopback_state) {
 			case 0:
 				UART_status = HAL_UART_GetState(&huart1);

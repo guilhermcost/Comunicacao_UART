@@ -1,5 +1,5 @@
 ../Core/Src/maincode.c:21:6:start_rtos	16	static
-../Core/Src/maincode.c:68:6:generateDataTask	88	static
-../Core/Src/maincode.c:137:6:transmitDataTask	80	static
-../Core/Src/maincode.c:156:6:ledTask	48	static
-../Core/Src/maincode.c:170:6:recieveDataTask	64	static
+../Core/Src/maincode.c:68:6:generateDataTask	96	static
+../Core/Src/maincode.c:152:6:transmitDataTask	80	static
+../Core/Src/maincode.c:171:6:ledTask	48	static
+../Core/Src/maincode.c:185:6:recieveDataTask	64	static
