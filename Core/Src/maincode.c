@@ -124,8 +124,8 @@ void generateDataTask(void *arg) {
 
 		// Para incluir tstamp (comentado para fins de teste)
 //		TickType_t now = xTaskGetTickCount();
-//		sampleData[43] = (uint8_t)((now & 0x00F0) >> 8);
-//		sampleData[44] = (uint8_t)((now & 0x000F) >> 0);
+//		sampleData[43] = (uint8_t)((now & 0xFF00) >> 8);
+//		sampleData[44] = (uint8_t)((now & 0x00FF) >> 0);
 
 		uint8_t p = 0;
 		for(int i = 0; i < sizeof(sampleData); i++) p ^= sampleData[i];
